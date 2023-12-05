@@ -511,19 +511,22 @@ public static void removeDuplicatesSoldTitles(ArrayList<String> titles, ArrayLis
 
 	for (int k = 0; k < 2; k++) {
 		Iterator<String> titleIterator = titles.iterator();
+		Iterator<Integer> quantityIterator = quantities.iterator();
 
-		while (titleIterator.hasNext()) {
+		while (titleIterator.hasNext() && quantityIterator.hasNext()) {
 			String currentTitle = titleIterator.next();
 
 			for (int j = titles.indexOf(currentTitle) + 1; j < titles.size(); j++) {
 				if (currentTitle.equals(titles.get(j))) {
 					quantities.set(titles.indexOf(currentTitle), quantities.get(titles.indexOf(currentTitle)) + quantities.get(j));
-					quantities.remove(j);
+					quantityIterator.next(); // Move the quantityIterator to the correct position
+					quantityIterator.remove(); // Use iterator to remove the element safely
+
+					titleIterator.next(); // Move the titleIterator to the correct position
 					titleIterator.remove(); // Use iterator to remove the element safely
 				}
 			}
 		}
-	}
 	int n=titles.size()-1;
 	try {
 		if (  titles.get(n).equals( titles.get(n-1) ) ) {

@@ -527,21 +527,20 @@ public static void removeDuplicatesSoldTitles(ArrayList<String> titles, ArrayLis
 				}
 			}
 		}
-	int n=titles.size()-1;
-	try {
-		if (  titles.get(n).equals( titles.get(n-1) ) ) {
+		int n = titles.size() - 1;
+		try {
+			if (titles.get(n).equals(titles.get(n - 1))) {
 
-			quantities.set(n-1,  quantities.get(n)+quantities.get(n-1) );
-			quantities.remove(n);
-			titles.remove(n);
+				quantities.set(n - 1, quantities.get(n) + quantities.get(n - 1));
+				quantities.remove(n);
+				titles.remove(n);
+			}
+		} catch (IndexOutOfBoundsException i) {
+			i.printStackTrace();
 		}
+
+
 	}
-	catch(IndexOutOfBoundsException i) {
-		i.printStackTrace();
-	}
 
 
-}
-
-
-}
+}}

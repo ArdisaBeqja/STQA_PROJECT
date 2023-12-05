@@ -510,23 +510,20 @@ public static ArrayList<Integer> getAllStock(){
 public static void removeDuplicatesSoldTitles(ArrayList<String> titles, ArrayList<Integer> quantities) {
 
 	for (int k = 0; k < 2; k++) {
-		Iterator<String> iterator = titles.iterator();
+		Iterator<String> titleIterator = titles.iterator();
 
-		while (iterator.hasNext()) {
-			String currentTitle = iterator.next();
+		while (titleIterator.hasNext()) {
+			String currentTitle = titleIterator.next();
 
 			for (int j = titles.indexOf(currentTitle) + 1; j < titles.size(); j++) {
 				if (currentTitle.equals(titles.get(j))) {
 					quantities.set(titles.indexOf(currentTitle), quantities.get(titles.indexOf(currentTitle)) + quantities.get(j));
-					iterator.remove(); // Use iterator to remove the element safely
 					quantities.remove(j);
-					titles.remove(j);
+					titleIterator.remove(); // Use iterator to remove the element safely
 				}
 			}
 		}
 	}
-
-
 	int n=titles.size()-1;
 	try {
 		if (  titles.get(n).equals( titles.get(n-1) ) ) {

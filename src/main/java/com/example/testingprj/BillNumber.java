@@ -31,10 +31,15 @@ public abstract class BillNumber {
 		try {
 			FileInputStream fis = new FileInputStream("Books.txt");
 		    ObjectInputStream objis = new ObjectInputStream(fis);
-		    
-		    while(true){
-	            stockBooks.add( (Book) objis.readObject() );
-	        }
+
+			while (true) {
+				try {
+					stockBooks.add((Book) objis.readObject());
+				} catch (EOFException e) {
+					// End of file reached, exit the loop
+					break;
+				}
+			}
 		    
 		}
 		catch(IOException i) {
@@ -93,10 +98,14 @@ public abstract class BillNumber {
 			FileInputStream fis = new FileInputStream("Books.txt");
 		    ObjectInputStream objis = new ObjectInputStream(fis);
 
-		    while(true){
-	            System.out.println( (Book) objis.readObject() );
-	        }
-
+			while (true) {
+				try {
+					System.out.println((Book) objis.readObject());
+				} catch (EOFException e) {
+					// End of file reached, exit the loop
+					break;
+				}
+			}
 		}
 		catch(IOException i) {
 			i.printStackTrace();
@@ -498,25 +507,25 @@ public static ArrayList<Integer> getAllStock(){
 }
 
 public static void removeDuplicatesSoldTitles(ArrayList<String> titles, ArrayList<Integer> quantities) {
-	
+
 	for (int k=0;k<2;k++) {
-		
+
 		for (int i=0;i<titles.size();i++) {
 			for (int j=i+1;j<titles.size();j++) {
 				if (titles.get(i).equals(titles.get(j))){
 					quantities.set(i, quantities.get(i) + quantities.get(j));
-					titles.remove(j);
 					quantities.remove(j);
+					titles.remove(j);
 				}
 			}
 	    }
-		
+
 	}
-	
+
 	int n=titles.size()-1;
 	try {
 		if (  titles.get(n).equals( titles.get(n-1) ) ) {
-			
+
 			quantities.set(n-1,  quantities.get(n)+quantities.get(n-1) );
 			quantities.remove(n);
 			titles.remove(n);
@@ -526,8 +535,8 @@ public static void removeDuplicatesSoldTitles(ArrayList<String> titles, ArrayLis
 		i.printStackTrace();
 	}
 
-	
+
 }
-    
-	
+
+
 }

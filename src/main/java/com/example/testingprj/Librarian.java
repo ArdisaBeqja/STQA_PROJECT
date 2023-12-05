@@ -3,6 +3,7 @@ package com.example.testingprj;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 public class Librarian extends BillNumber {
 	
@@ -85,23 +86,44 @@ public class Librarian extends BillNumber {
 	
 	public void removeDuplicatesSoldBooks(ArrayList<Book> books, ArrayList<Integer> quantities) {
 		
+//		if (books.isEmpty() || quantities.isEmpty())
+//			return;
+//
+//		for (int k=0;k<2;k++) {
+//
+//			for (int i=0;i<books.size();i++) {
+//				for (int j=i+1;j<books.size();j++) {
+//					if (books.get(i).getISBN().equals(books.get(j).getISBN())){
+//						quantities.set(i, quantities.get(i) + quantities.get(j));
+//						books.remove(j);
+//						quantities.remove(j);
+//					}
+//				}
+//		    }
+//
+//		}
 		if (books.isEmpty() || quantities.isEmpty())
 			return;
-		
-		for (int k=0;k<2;k++) {
-			
-			for (int i=0;i<books.size();i++) {
-				for (int j=i+1;j<books.size();j++) {
-					if (books.get(i).getISBN().equals(books.get(j).getISBN())){
-						quantities.set(i, quantities.get(i) + quantities.get(j));
-						books.remove(j);
-						quantities.remove(j);
+
+		for (int k = 0; k < 2; k++) {
+			Iterator<Book> bookIterator = books.iterator();
+			Iterator<Integer> quantityIterator = quantities.iterator();
+
+			while (bookIterator.hasNext() && quantityIterator.hasNext()) {
+				Book currentBook = bookIterator.next();
+
+				for (int j = books.indexOf(currentBook) + 1; j < books.size(); j++) {
+					if (currentBook.getISBN().equals(books.get(j).getISBN())) {
+						quantities.set(books.indexOf(currentBook), quantities.get(books.indexOf(currentBook)) + quantities.get(j));
+						bookIterator.remove(); // Use iterator to remove the element safely
+						quantityIterator.next(); // Move the quantityIterator to the correct position
+						quantityIterator.remove(); // Use iterator to remove the element safely
 					}
 				}
-		    }
-			
+			}
 		}
-		
+
+
 		int n=books.size()-1;
 		try {
 			if (  books.get(n).getISBN().equals( books.get(n-1).getISBN() ) ) {
@@ -111,7 +133,7 @@ public class Librarian extends BillNumber {
 				books.remove(n);
 			}
 		}
-		catch(IndexOutOfBoundsException e) {}
+		catch(IndexOutOfBoundsException e) {e.printStackTrace();}
 		
 	}
 	
@@ -144,16 +166,22 @@ public class Librarian extends BillNumber {
 	}
 	
 	
-	public static ArrayList<Date> addBookDates(Book book,ArrayList<Date> dates) {
-		ArrayList<Date> ans = new ArrayList<>();
-		
-		for (int i=0;i<dates.size();i++) {
-			ans.add(dates.get(i));
-		}
-		
+//	public static ArrayList<Date> addBookDates(Book book,ArrayList<Date> dates) {
+//		ArrayList<Date> ans = new ArrayList<>();
+//
+//		for (int i=0;i<dates.size();i++) {
+//			ans.add(dates.get(i));
+//		}
+//
+//		return ans;
+//	}
+	public static ArrayList<Date> addBookDates(Book book, ArrayList<Date> dates) {
+		ArrayList<Date> ans = new ArrayList<>(dates); // Copy the existing dates to ans
+		ans.addAll(book.getDates()); // Add all dates from the book to ans
 		return ans;
 	}
-	
+
+
 	public double moneyMadeInDay() {
 		
 		if (this.datesSold==null) {

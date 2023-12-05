@@ -88,17 +88,22 @@ public abstract class BillNumber {
 		try {
 			FileInputStream fis = new FileInputStream("Books.txt");
 		    ObjectInputStream objis = new ObjectInputStream(fis);
-		    
+
 		    while(true){
 	            System.out.println( (Book) objis.readObject() );
 	        }
-		    
+
 		}
-		catch(IOException i) {}
-		catch(ClassNotFoundException c) {}
+		catch(IOException i) {
+			i.printStackTrace();
+		}
+		catch(ClassNotFoundException c) {
+			c.printStackTrace();
+		}
+
 
 	}
-	
+
 	public static ArrayList<String> getCategories() {
 		
 		ArrayList<String> ans = new ArrayList<>();

@@ -922,7 +922,9 @@ public BorderPane mainPage() {
      	int j=0;
      	int k=0;
 		
-     	if (books.isEmpty()) {}
+     	if (books.isEmpty()) {
+			System.out.println("Empty");
+		}
      	else {
      		for (int i=0;i<books.size();i++) {
         		if (i%5==0) {
@@ -936,12 +938,12 @@ public BorderPane mainPage() {
         	}
      	}
 		
-		grid.add(bttNewBook, k++, j);
+		grid.add(bttNewBook, k, j);
 		grid.setAlignment(Pos.CENTER);
     	border.setCenter(grid);
-    	
+
     	bttNewBook.setOnAction(event -> {
-			
+
             if(event.getSource()==bttNewBook) {
             	bookISBN.clear();
      		    title.clear();
@@ -1184,7 +1186,7 @@ public BorderPane mainPage() {
     		    stockbooks.add(book);
     		    try {
 					BillNumber.updateBooks(stockbooks);
-				} catch (IOException e) {}
+				} catch (IOException e) {e.printStackTrace();}
     		    
     		    bookISBN.clear();
     		    title.clear();
@@ -2393,7 +2395,13 @@ public BorderPane mainPage() {
 				username.clear();
 				password.clear();
 				librarian = Manager.getBackLibrarian(librarian);
-				usernamePage = librarian.getName();
+				if(librarian!=null){
+					usernamePage= librarian.getName();
+				}
+				else{
+					usernamePage="Unknown pagename";
+					System.out.println("Page is null");
+				}
 				bttSubmit.getScene().setRoot(librarianMainPage());
 				
 			}
@@ -2402,7 +2410,16 @@ public BorderPane mainPage() {
 				username.clear();
 				password.clear();
 				manager = Administrator.getBackManager(manager);
-				usernamePage = manager.getName();
+				// Assuming manager is an instance of some class with the getName() method
+				if (manager != null) {
+					usernamePage = manager.getName();
+				} else {
+					// Handle the case where manager is null, perhaps by providing a default value or logging an error
+					// For example:
+					usernamePage = "Unknown Manager";
+					System.err.println("Warning: Manager is null.");
+				}
+
 				bttSubmit.getScene().setRoot(mangaerMainPage());
 				
 			}
@@ -2457,7 +2474,8 @@ public BorderPane mainPage() {
 			}
 			
 			String isbn = comboBoxLibrarian.getValue().toString().substring(0,13);
-			Integer quan = Integer.parseInt(quantity.getCharacters().toString());
+			int quan = Integer.parseInt(quantity.getCharacters().toString());
+
 			String Title = comboBoxLibrarian.getValue().toString().substring(16);
 			date = new Date();
 			

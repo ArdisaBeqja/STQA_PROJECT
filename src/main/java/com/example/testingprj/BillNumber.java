@@ -3,6 +3,7 @@ package com.example.testingprj;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 public abstract class BillNumber {
 
@@ -508,19 +509,23 @@ public static ArrayList<Integer> getAllStock(){
 
 public static void removeDuplicatesSoldTitles(ArrayList<String> titles, ArrayList<Integer> quantities) {
 
-	for (int k=0;k<2;k++) {
+	for (int k = 0; k < 2; k++) {
+		Iterator<String> iterator = titles.iterator();
 
-		for (int i=0;i<titles.size();i++) {
-			for (int j=i+1;j<titles.size();j++) {
-				if (titles.get(i).equals(titles.get(j))){
-					quantities.set(i, quantities.get(i) + quantities.get(j));
+		while (iterator.hasNext()) {
+			String currentTitle = iterator.next();
+
+			for (int j = titles.indexOf(currentTitle) + 1; j < titles.size(); j++) {
+				if (currentTitle.equals(titles.get(j))) {
+					quantities.set(titles.indexOf(currentTitle), quantities.get(titles.indexOf(currentTitle)) + quantities.get(j));
+					iterator.remove(); // Use iterator to remove the element safely
 					quantities.remove(j);
 					titles.remove(j);
 				}
 			}
-	    }
-
+		}
 	}
+
 
 	int n=titles.size()-1;
 	try {
